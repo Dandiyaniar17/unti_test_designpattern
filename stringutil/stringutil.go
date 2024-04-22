@@ -1,8 +1,12 @@
-// File: stringutil/stringutil.go
-
 package stringutil
 
-import "strings"
+
+import (
+
+	"strings"
+)
+
+type StringFunction func(string) string
 
 func Reverse(s string) string {
     runes := []rune(s)
@@ -30,3 +34,33 @@ func FirstRune(s string) rune {
     }
     return []rune(s)[0]
 }
+
+func GetStringFunction(funcType string) StringFunction {
+    switch funcType {
+    case "reverse":
+        return Reverse
+    case "toUpper":
+        return ToUpper
+   
+    case "isEmpty":
+        return func(s string) string {
+            if IsEmpty(s) {
+                return "The string is empty"
+            }
+            return "The string is not empty"
+        }
+    case "firstRune":
+        return func(s string) string {
+            if len(s) == 0 {
+                return "The string is empty"
+            }
+            return string(FirstRune(s))
+        }
+    default:
+        return func(s string) string {
+            return "Invalid function type"
+        }
+    }
+}
+
+
